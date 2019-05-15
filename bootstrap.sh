@@ -1,9 +1,10 @@
 #!/bin/bash
 usage () {
 cat <<-EOH
-Usage: $0
+Usage: $0 [adding anything other than -h triggers an actual run]
 Future options:
 [enable-ssh] [public-key]
+
 EOH
 }
 
@@ -12,7 +13,7 @@ docs () {
 sed -n -e '/Steps/,$p' README.md
 }
 
-[ -n $1 ] && { usage; docs; exit 0; }
+[ -z "$1" ] && { usage; docs; exit 0; }
 case $1 in
 	-h|--help) usage; docs; exit 0;;
 esac

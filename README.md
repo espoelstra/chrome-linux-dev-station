@@ -8,11 +8,20 @@ You can `curl` and run the script directly, but the Linux VM has passwordless `s
 
 ### Requirements
 
-This bootstrap hopes you are using a Yubikey with a GPG key so you can keep your private keys VERY secure but also able to use it for SSH with a couple awesome extensions from the Chrome Webstore. The Yubikey requires setup on a "real" Linux/macOS/Windows machine until arbitrary USB devices can be passed through to the Linux VM wily-nily, see the Dr. Duh Yubikey guide for that portion. The Chrome extensions can also work on a Linux/macOS/Windows machine with the Secure Shell app so that portion of this guide might be more broadly applicable.
+This bootstrap hopes you are using a Yubikey with a GPG key so you can keep your private keys VERY secure but also able to use it for SSH with a couple awesome extensions from the Chrome Webstore. The Yubikey requires setup on a "real" Linux/macOS/Windows machine until arbitrary USB devices can be passed through to the Linux VM wily-nily, see the Dr. Duh Yubikey guide for that portion. The Chrome extensions can also work on a Linux/macOS/Windows machine with the Secure Shell app/extension so that portion of this guide might be more broadly applicable.
 
-1. Install the Secure Shell (by Google) and SSH Agent for Secure Shell (by Google)
-2. If you will be using a Yubikey/Nitrokey/other GPG enabled smartcard then install the Smartcard Connector (by Google).
-3. You probably also want the Crosh Window extension to open Secure Shell as a window instead of a tab.
+Install the following extensions (Ctrl+click on each url to open in your browser)
+
+1. Secure Shell app/extension (by Google)
+  * Pick one or both if you want
+  * https://chrome.google.com/webstore/detail/secure-shell-app/pnhechapfaindjhompbnflcldabbghjo
+  * https://chrome.google.com/webstore/detail/secure-shell-extension/iodihamcpbpeioajjeobimgagajmlibd?hl=en
+2. Crosh Window extension 
+  * This allows Ctrl+W/Ctrl+N/Ctrl+T/etc to go into Secure Shell/Crosh instead of ChromeOS so eg Ctrl+W doesn't close the window
+  * https://chrome.google.com/webstore/detail/crosh-window/nhbmpbdladcchdhkemlojfjdknjadhmh
+3. Smartcard Connector (by Google).
+  * If you will be using a Yubikey/Nitrokey/other GPG enabled smartcard then install this
+  * https://chrome.google.com/webstore/detail/smart-card-connector/khpfeaanjngmcnplbdlpegiifgpfgdco
 
 ### Steps
 
@@ -31,3 +40,7 @@ This bootstrap hopes you are using a Yubikey with a GPG key so you can keep your
 #### Bonus points
 
 While playing with some additional options to configure the system in a repeatable way (and idempotently as well), it occurred to me that Jess Frazelle has a pretty awesome set of Dockerfiles and her dotfiles has a .dockerfunc file that lets you run many GUI applications from within containers. Due to the fact that ChromeOS has Sommelier to handle X11 and/or Wayland applications, you can use her dotfiles with only a couple simple tweaks. The main one is to run `xhost local:` after starting your VM and/or SSH session, after that any container like `gimp` or `audacity` should hit the sommelier wrapping just by requesting access to the X11 server. The best part is this also works if you are using the Secure Shell app to access the Linux VM rather than the Terminal, so you can still forward in your SSH agent and do things that require access to it for cloning/pushing/etc.
+
+If you happen to break your VM/container while playing around, you can use Crosh and `vmc` to delete/recreate it. The cool thing is you can setup a "Crosh connection" in the Secure Shell app so you don't have to remember the Ctrl+Alt+T shortcut to open a Crosh tab, and you also get the benefit of being able to use Ctrl+W and other shortcuts if you installed Crosh Window.
+
+Create a new connection in Secure Shell using "dummy@>crosh" in the first line and hit Enter/Return and you should get a crosh> prompt. If you are in developer mode you can type 'shell' to get a real shell, otherwise you can play with 'vmc -h' and look at some of the other commands with 'help_advanced'.
