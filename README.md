@@ -4,7 +4,7 @@
 
 ### Disclaimer
 
-You can `curl` and run the script directly, but the Linux VM has passwordless `sudo`, so before you hose up your system (even if it easy enough to recreate and isolated from your host, it is still silly to break so carelessly), be smart and clone the repo and read the script first, or at least download the raw script file and double check the contents before you `bash bootstrap.sh` or `chmod +x bootstrap.sh && ./bootstrap.sh`.
+You can `curl` and run the script directly, but the Linux VM has passwordless `sudo`, so before you hose up your system (even if it easy enough to recreate and isolated from your host, it is still silly to break so carelessly), be smart and clone the repo and read the script first, or at least download the raw script file and double check the contents before you `bash bootstrap.sh doit` or `chmod +x bootstrap.sh && ./bootstrap.sh doit`.
 
 ### Requirements
 
@@ -25,9 +25,9 @@ Install the following extensions (Ctrl+click on each url to open in your browser
 
 ### Steps
 
-1. To open Secure Shell as a window, open the Launcher fully (hit the Search key and the ^ to expand it), then locate the Secure Shell icon and right click and where it says "New tab" hit the arrow and select "New window".
+1. To open Secure Shell as a window, open the Launcher fully (hit the Search key and the ^ to expand it), then locate the Secure Shell icon and right click (two finger click or press and hold on a touchscreen) and where it says "New tab" hit the arrow and select "New window".
 2. Now launch Secure Shell and add a new entry by filling in the fields at the bottom.
-    * You will want to use the username that was created in your VM, it matches the part of your email address before the @whateverdomain.com portion.
+    * You will want to use the username that was created in your VM, it matches the part of your email address before the @gmail.com portion (or @whateverdomain.com if you use GSuite).
     * For the hostname it should be penguin.linux.test unless you've done some advanced changes.
     * You can leave the port empty as it defaults to 22 which is the normal SSH port.
     * In the "SSH relay server options" add '--ssh-agent=gsc'
@@ -39,8 +39,8 @@ Install the following extensions (Ctrl+click on each url to open in your browser
 
 #### Bonus points
 
-While playing with some additional options to configure the system in a repeatable way (and idempotently as well), it occurred to me that Jess Frazelle has a pretty awesome set of Dockerfiles and her dotfiles has a .dockerfunc file that lets you run many GUI applications from within containers. Due to the fact that ChromeOS has Sommelier to handle X11 and/or Wayland applications, you can use her dotfiles with only a couple simple tweaks. The main one is to run `xhost local:` after starting your VM and/or SSH session, after that any container like `gimp` or `audacity` should hit the sommelier wrapping just by requesting access to the X11 server. The best part is this also works if you are using the Secure Shell app to access the Linux VM rather than the Terminal, so you can still forward in your SSH agent and do things that require access to it for cloning/pushing/etc.
+While playing with some additional options to configure the system in a repeatable way (and idempotently as well), it occurred to me that Jess Frazelle has a pretty awesome set of Dockerfiles and her dotfiles has a .dockerfunc file that lets you run many GUI applications from within containers. Due to the fact that ChromeOS has Sommelier to handle X11 and/or Wayland applications, you can use her dotfiles with only a couple simple tweaks. The main one is to run `xhost local:` after starting your VM and/or SSH session, after that any container like `gimp` or `audacity` should hit the sommelier wrapping just by requesting access to the X11 server. The best part is this also works if you are using the Secure Shell app to access the Linux VM rather than the Terminal, so you can still forward in your SSH agent and do things that require access to it for cloning/pushing/etc. I've forked her dotfiles https://github.com/espoelstra/jessfraz-dotfiles/tree/master-crostini and if you checkout the master-crostini branch, it has some tweaks to make things play a little nicer in the Linux VM. You still run `bin/install.sh` to install and it will direct you what the valid options are, though many of them might not apply or be required, there are a couple packages that her dotfiles expect that are present unless you install the `basemin`.
 
-If you happen to break your VM/container while playing around, you can use Crosh and `vmc` to delete/recreate it. The cool thing is you can setup a "Crosh connection" in the Secure Shell app so you don't have to remember the Ctrl+Alt+T shortcut to open a Crosh tab, and you also get the benefit of being able to use Ctrl+W and other shortcuts if you installed Crosh Window.
+If you happen to break your VM/container while playing around, you can use Crosh and `vmc` to delete/recreate it. The cool thing is you can also setup a "Crosh connection" in the Secure Shell app so you don't have to remember the Ctrl+Alt+T shortcut to open a Crosh tab, and you also get the benefit of being able to use Ctrl+W and other shortcuts if you installed Crosh Window.
 
-Create a new connection in Secure Shell using "dummy@>crosh" in the first line and hit Enter/Return and you should get a crosh> prompt. If you are in developer mode you can type 'shell' to get a real shell, otherwise you can play with 'vmc -h' and look at some of the other commands with 'help_advanced'.
+Create a new connection in Secure Shell using "dummy@>crosh" in the first line  or if you don't like dummy in the name you can just put that as the user and use `>crosh` as the host and hit Enter/Return and you should get a crosh> prompt. If you are in developer mode you can type 'shell' to get a real shell, otherwise you can play with 'vmc' or 'vsh' and look at some of the other commands with 'help_advanced'.
